@@ -1,4 +1,4 @@
-package com.ctci.chp1.ArraysStrings;
+package com.ctci.solutions;
 
 public class S1_ArrayString {
 	// Chp 1: Arrays and Strings
@@ -18,7 +18,7 @@ public class S1_ArrayString {
 		System.out.println("Palindrome Permutation = " + isPermutationOfPalindrome("Tact Cat"));
 
 		// 1.5 - OneAway
-		System.out.println("OneAway = " + isOneAway("pale", "pal"));
+		System.out.println("OneAway = " + isOneAway("epal", "pal"));
 
 		// 1.6 - Compress
 		System.out.println("Compress = " + compress("aabbbc"));
@@ -147,6 +147,7 @@ public class S1_ArrayString {
 	// 1.5 One Away
 	private static boolean isOneAway(String s1, String s2) {
 		return isOneAwayCombined(s1, s2);
+
 		/*
 		 * if (s1.length() == s2.length()) { return oneEditReplace(s1, s2); }
 		 * else if (s1.length() + 1 == s2.length()) { return oneEditInsert(s1,
@@ -186,6 +187,9 @@ public class S1_ArrayString {
 	}
 
 	private static boolean isOneAwayCombined(String a, String b) {
+		// if (a.length() < b.length())
+		// return isOneAwayCombined(b, a);
+
 		String s1 = a.length() < b.length() ? a : b;
 		String s2 = a.length() < b.length() ? b : a;
 

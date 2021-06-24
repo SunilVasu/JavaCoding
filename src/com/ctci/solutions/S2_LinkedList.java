@@ -1,4 +1,4 @@
-package com.ctci.chp1.ArraysStrings;
+package com.ctci.solutions;
 
 import java.util.HashSet;
 import java.util.Set;
