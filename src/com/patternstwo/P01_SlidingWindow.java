@@ -1,4 +1,4 @@
-package com.patterns.two;
+package com.patternstwo;
 
 public class P01_SlidingWindow {
 
