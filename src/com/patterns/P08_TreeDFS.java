@@ -399,16 +399,16 @@ public class P08_TreeDFS {
 		recurTraversal(r);
 
 		// ...[15]
-		// 10.......20
-		// ......[16..25]
+		// 10.......25
+		// ......[20..30]
 		TreeNode root = new TreeNode(15);
 		root.left = new TreeNode(10);
-		root.right = new TreeNode(20);
-		root.right.left = new TreeNode(16);
-		root.right.right = new TreeNode(25);
-		System.out.println("\ninorder [10,15,16,20,25]= " + inorder(root));
-		System.out.println("preorder [15,10,20,16,25]= " + preorder(root));
-		System.out.println("postorder [10,16,25,20,15]= " + postorder(root));
+		root.right = new TreeNode(25);
+		root.right.left = new TreeNode(20);
+		root.right.right = new TreeNode(30);
+		System.out.println("\ninorder [10,15,25,20,30]= " + inorder(root)); // l->r
+		System.out.println("preorder [15,10,25,20,30]= " + preorder(root)); // r->l
+		System.out.println("postorder [10,20,30,25,15]= " + postorder(root));// l->r
 		recurTraversal(root);
 
 	}
@@ -494,6 +494,7 @@ public class P08_TreeDFS {
 	public static void inorder(TreeNode node, List<Integer> list) {
 		if (node == null)
 			return;
+
 		// #inorder
 		inorder(node.left, list);
 		list.add(node.val);

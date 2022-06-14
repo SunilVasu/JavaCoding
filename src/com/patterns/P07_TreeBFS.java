@@ -15,9 +15,9 @@ public class P07_TreeBFS {
 	public static void main(String[] args) {
 		System.out.println("##Pattern 07 : Tree Breadth First Search (BFS)");
 
-		// MISC 1 : Graph BFS using Queue
+		// MISC 1 : Graph BFS using QUEUE
 		bfs();
-		// MISC 2 : Graph DFS using Stack
+		// MISC 2 : Graph DFS using STACK
 		dfs();
 		dfs_recur();
 
@@ -365,7 +365,8 @@ public class P07_TreeBFS {
 		return res;
 	}
 
-	// #MISC: #M1 Minimal Tree: Given sorted uniq arr, create a BST with minimal
+	// #MISC: #M1 Minimal Tree: Given sorted unique array, create a BST with
+	// minimal
 	// height
 	public static void minimalTree() {
 		System.out.println("\n#MISC: Minimal Binary Tree");
@@ -389,7 +390,7 @@ public class P07_TreeBFS {
 		return n;
 	}
 
-	// #M2 construct a complete binary tree from given arr in level order
+	// #M2 construct a complete binary tree from given array in level order
 	public static void levelOrderConstruct() {
 		System.out.println("\n#M2 Construct a complete binary tree from given arr in level order");
 		int[] arr = new int[] { 1, 2, 3, 4, 5, 6 };
