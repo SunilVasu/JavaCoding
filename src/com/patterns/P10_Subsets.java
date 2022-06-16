@@ -46,6 +46,7 @@ public class P10_Subsets {
 	}
 
 	// #1 Subset: RT = O(N * 2^N) = space
+	// https://leetcode.com/problems/combination-sum/discuss/16502/A-general-approach-to-backtracking-questions-in-Java-(Subsets-Permutations-Combination-Sum-Palindrome-Partitioning)
 	public static void subset(int[] nums) {
 		Set<Integer> set = new HashSet<Integer>();
 		for (int n : nums)

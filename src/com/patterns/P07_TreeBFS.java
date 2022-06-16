@@ -167,6 +167,7 @@ public class P07_TreeBFS {
 	// RT = O(N) as we go through each node once
 	// Given a BT, populate array to represent its level-by-level traversal
 	// https://leetcode.com/problems/binary-tree-level-order-traversal/
+	// https://leetcode.com/problems/binary-tree-level-order-traversal/discuss/114449/A-general-approach-to-level-order-traversal-questions-in-Java
 	public static void levelOrder(TreeNode root) {
 		List<List<Integer>> res = new LinkedList<>();
 
@@ -410,7 +411,6 @@ public class P07_TreeBFS {
 			root.right = insertLevelOrder(arr, root.right, 2 * i + 2);
 		}
 		return root;
-
 	}
 
 	public static void inOrderPrint(TreeNode root) {

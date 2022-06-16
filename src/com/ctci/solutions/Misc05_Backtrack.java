@@ -95,6 +95,7 @@ public class Misc05_Backtrack {
 	}
 
 	// set - i/p distinct; o/p must not contain duplicate set
+	// https://leetcode.com/problems/combination-sum/discuss/16502/A-general-approach-to-backtracking-questions-in-Java-(Subsets-Permutations-Combination-Sum-Palindrome-Partitioning)
 	public static void backtrack(List<List<Integer>> list, List<Integer> temp, Set<Integer> set) {
 		list.add(new ArrayList<>(temp));
 		for (int i : set) {

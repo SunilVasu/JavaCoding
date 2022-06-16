@@ -16,9 +16,9 @@ public class P08_TreeDFS {
 
 		// #1: Path Sum
 		// https://leetcode.com/problems/path-sum/
-		System.out.println("\n#1: Path Sum");
 		Node_ root = createBinarySearchTree();
-		// printTree(root, " ");
+		printTree(root, " ");
+		System.out.println("\n#1: Path Sum");
 		int sum = 5;
 		System.out.println("PathSum (sum=" + sum + ")=" + hasPathSum(root, sum));
 		root = createBinarySearchTree();
@@ -29,18 +29,18 @@ public class P08_TreeDFS {
 		System.out.println("PathSum (sum=" + sum + ")=" + hasPathSum_recur(root, sum));
 
 		// #2: Path Sum II (find all path for target sum)
-		// https://leetcode.com/problems/path-sum/
+		// https://leetcode.com/problems/path-sum-ii/
 		System.out.println("\n#2: Path Sum-2");
 		root = createBinarySearchTree();
 		List<List<Integer>> res = new LinkedList<>();
 		List<Integer> currRes = new LinkedList<>();
 		pathSum_2(root, sum, currRes, res);
-		System.out.println("PathSum 2 =" + res);
+		System.out.println("PathSum 2 (all path with targetSum) =" + res + "  for SUM = " + sum);
 
 		root = createBinarySearchTree();
 		currRes = new LinkedList<>();
 		pathSumAll_2(root, 0, currRes);
-		System.out.println("PathSum 2 (All Sums) =" + currRes);
+		System.out.println("PathSum 2 (all Sums) =" + currRes);
 
 		// #2.1 Find all root-to-leaf path of Binary Tree
 		// Same as #2, avoid only the targetSum check
@@ -49,7 +49,7 @@ public class P08_TreeDFS {
 		res = new LinkedList<>();
 		currRes = new LinkedList<>();
 		pathSum_All(root, currRes, res);
-		System.out.println("PathSum 2 (All paths)=" + res);
+		System.out.println("PathSum 2 (all paths)=" + res);
 
 		// #2.2 Find the root-to-path with the max sum
 		// Same as #2, keep check for maxSum
@@ -121,10 +121,13 @@ public class P08_TreeDFS {
 	}
 
 	// #1: Path Sum: RT=O(N)=space
+	// https://leetcode.com/problems/path-sum/
 	public static boolean hasPathSum(Node_ root, int sum) {
 		Stack<Node_> stack = new Stack<>();
+		if (root == null)
+			return false;
 		stack.push(root);
-		while (!stack.isEmpty() && root != null) {
+		while (!stack.isEmpty()) {
 			Node_ temp = stack.pop();
 			if (temp.val == sum)
 				return true;
@@ -148,7 +151,8 @@ public class P08_TreeDFS {
 		return hasPathSum_recur(root.left, sum - root.val) || hasPathSum_recur(root.right, sum - root.val);
 	}
 
-	// #2: Path Sum II (find all path sum): RT = O(N^2); Space=O(N)
+	// #2: Path Sum II(find all path sum with targetSum): RT = O(N^2);Space=O(N)
+	// https://leetcode.com/problems/path-sum-ii/
 	public static void pathSum_2(Node_ root, int targetSum, List<Integer> currRes, List<List<Integer>> res) {
 		if (root == null)
 			return;
@@ -162,6 +166,7 @@ public class P08_TreeDFS {
 		currRes.remove(currRes.size() - 1);
 	}
 
+	// #2.0: Path Sum II (find sum for all Paths)
 	public static void pathSumAll_2(Node_ root, int sum, List<Integer> currRes) {
 		if (root == null)
 			return;
@@ -174,7 +179,7 @@ public class P08_TreeDFS {
 		}
 	}
 
-	// #2.1: Path Sum II (find all paths): RT = O(N^2); Space=O(N)
+	// #2.1: Path Sum II (find all paths in tree): RT = O(N^2); Space=O(N)
 	public static void pathSum_All(Node_ root, List<Integer> currRes, List<List<Integer>> res) {
 		if (root == null)
 			return;
@@ -198,17 +203,19 @@ public class P08_TreeDFS {
 
 	}
 
+	// can be derived from PathSum_II
 	public static void pathSum_maxSum(Node_ root, int sum) {
-		if (null == root) {
+		if (root == null) {
 			return;
 		}
 		sum += root.val;
 		if (sum > maxSum && root.left == null && root.right == null) {
 			maxLeaf = root;
 			maxSum = sum;
+		} else {
+			pathSum_maxSum(root.left, sum);
+			pathSum_maxSum(root.right, sum);
 		}
-		pathSum_maxSum(root.left, sum);
-		pathSum_maxSum(root.right, sum);
 	}
 
 	// #3: Sum of Path Numbers: RT = O(N) = Space
@@ -534,9 +541,9 @@ public class P08_TreeDFS {
 
 	// BST - balanced
 	public static Node_ createBinarySearchTree() {
-		Node_ n0 = new Node_(0);
-		Node_ n1 = new Node_(1);
-		Node_ n2 = new Node_(2);
+		Node_ n0 = new Node_(0);// _ _ 2 _ _
+		Node_ n1 = new Node_(1);// 1 _ _ 4
+		Node_ n2 = new Node_(2);// 0 _ 3 5
 		Node_ n3 = new Node_(3);
 		Node_ n4 = new Node_(4);
 		Node_ n5 = new Node_(5);
