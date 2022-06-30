@@ -1,4 +1,4 @@
-package com.patternstwo;
+package com.patterns.revision;
 
 public class P02_TwoPointers {
 

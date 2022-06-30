@@ -1,4 +1,4 @@
-package com.patternstwo;
+package com.patterns.revision;
 
 import java.util.ArrayList;
 import java.util.Arrays;

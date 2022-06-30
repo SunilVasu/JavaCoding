@@ -166,7 +166,6 @@ public class Misc03_RecursionDP {
 	}
 
 	public static void dfs(int[][] grid, int x, int y, StringBuilder sb, String dir) {
-
 		if (x < 0 || x >= grid.length || y < 0 || y >= grid[0].length || grid[x][y] == 0) {
 			return;
 		}
@@ -240,7 +239,7 @@ public class Misc03_RecursionDP {
 		return res;
 	}
 
-	// Word Search
+	// #2.4.1 Word Search - All directions
 	// https://leetcode.com/problems/word-search/
 	public static boolean checkMatch(char[][] grid, String str) {
 		for (int i = 0; i < grid.length; i++) {
@@ -256,44 +255,11 @@ public class Misc03_RecursionDP {
 		return false;
 	}
 
-	// WordSearch - only right & down movement
-	public static boolean checkMatch2(char[][] grid, String str) {
-		for (int i = 0; i < grid.length; i++) {
-			for (int j = 0; j < grid[0].length; j++) {
-				if (grid[i][j] == str.charAt(0)) {
-					if (dfs_wordSearch2(grid, i, j, str, 0)) {
-						return true;
-					}
-
-				}
-			}
-		}
-		return false;
-	}
-
-	public static boolean checkMatch3(char[][] grid, String str) {
-		List<List<Integer>> list = new LinkedList<>();
-		for (int i = 0; i < grid.length; i++) {
-			for (int j = 0; j < grid[0].length; j++) {
-				if (grid[i][j] == str.charAt(0)) {
-					List<List<Integer>> temp = new LinkedList<>();
-					if (dfs_wordSearch3(grid, i, j, str, 0, list, temp)) {
-						System.out.println("#List=" + list + "\n#Temp=" + temp);
-						return true;
-					}
-
-				}
-			}
-		}
-		return false;
-	}
-
+	// wordsearch.dfs() - all directions; '#' needed for all directions only
 	public static boolean dfs_wordSearch(char[][] grid, int x, int y, String str, int index) {
-		if (x < 0 || x >= grid.length || y < 0 || y >= grid[0].length)
-			return false;
 		if (index == str.length())
 			return true;
-		if (grid[x][y] != str.charAt(index))
+		if (x < 0 || x >= grid.length || y < 0 || y >= grid[0].length || grid[x][y] != str.charAt(index))
 			return false;
 
 		// System.out.println(grid[x][y] + " " + index);
@@ -309,12 +275,26 @@ public class Misc03_RecursionDP {
 		return res;
 	}
 
+	// #2.4.2 WordSearch - only right & down movement
+	public static boolean checkMatch2(char[][] grid, String str) {
+		for (int i = 0; i < grid.length; i++) {
+			for (int j = 0; j < grid[0].length; j++) {
+				if (grid[i][j] == str.charAt(0)) {
+					if (dfs_wordSearch2(grid, i, j, str, 0)) {
+						return true;
+					}
+
+				}
+			}
+		}
+		return false;
+	}
+
+	// wordsearch.dfs() - only right & down movement
 	public static boolean dfs_wordSearch2(char[][] grid, int x, int y, String str, int index) {
-		if (x < 0 || x >= grid.length || y < 0 || y >= grid[0].length)
-			return false;
 		if (index == str.length())
 			return true;
-		if (grid[x][y] != str.charAt(index))
+		if (x < 0 || x >= grid.length || y < 0 || y >= grid[0].length || grid[x][y] != str.charAt(index))
 			return false;
 
 		// System.out.println(grid[x][y] + " " + index + " (" + x + "," + y +
@@ -325,10 +305,28 @@ public class Misc03_RecursionDP {
 		return res;
 	}
 
+	// #2.4.3 WordSearch - track directions
+	public static boolean checkMatch3(char[][] grid, String str) {
+		List<List<Integer>> list = new LinkedList<>();
+		for (int i = 0; i < grid.length; i++) {
+			for (int j = 0; j < grid[0].length; j++) {
+				if (grid[i][j] == str.charAt(0)) {
+					List<List<Integer>> temp = new LinkedList<>();
+					if (dfs_wordSearch3(grid, i, j, str, 0, list, temp)) {
+						System.out.println("ANS = [[1, 1], [1, 2], [1, 3], [2, 3], [3, 3], [3, 4]]");
+						System.out.println("#List=" + list + "\n#Temp=" + temp);
+						return true;
+					}
+
+				}
+			}
+		}
+		return false;
+	}
+
+	// wordsearch.dfs() - track directions
 	public static boolean dfs_wordSearch3(char[][] grid, int x, int y, String str, int index, List<List<Integer>> list,
 			List<List<Integer>> temp) {
-		if (x < 0 || x >= grid.length || y < 0 || y >= grid[0].length)
-			return false;
 		if (index == str.length() && temp.size() == index) {
 			if (list.size() == 0) {
 				list.addAll(temp);
@@ -337,12 +335,12 @@ public class Misc03_RecursionDP {
 			temp = new LinkedList<>();
 			return true;
 		}
+
+		if (x < 0 || x >= grid.length || y < 0 || y >= grid[0].length || grid[x][y] != str.charAt(index))
+			return false;
+
 		if (list.size() == str.length())
 			return true;
-
-		if (grid[x][y] != str.charAt(index)) {
-			return false;
-		}
 
 		temp.add(Arrays.asList(x, y));
 		// System.out.println(grid[x][y] + " " + index + " (" + x + "," + y +

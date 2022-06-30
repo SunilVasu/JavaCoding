@@ -107,6 +107,7 @@ public class Misc05_Backtrack {
 		}
 	}
 
+	// same as above; only difference is input is an array
 	public static void backtrack(List<List<Integer>> list, List<Integer> temp, int[] nums, int start) {
 		list.add(new ArrayList<>(temp));
 		for (int i = start; i < nums.length; i++) {

@@ -12,8 +12,8 @@ public class P01_SlidingWindow {
 	public static void main(String[] args) {
 		System.out.println("##Pattern 01 : Sliding Window");
 
-		System.out.println("\n#1 Max Avg Subnumsay");
-		System.out.println("maxAvgSub array (12.75) = " + maxAvgSubArray(new int[] { 1, 12, -5, -6, 50, 3 }, 4));
+		System.out.println("\n#1 Max Avg sub-array");
+		System.out.println("maxAvgsub-array (12.75) = " + maxAvgSubArray(new int[] { 1, 12, -5, -6, 50, 3 }, 4));
 		maxAvgSubArray2(new int[] { 1, 12, -5, -6, 50, 3 }, 4);
 		maxAvgSubArray2(new int[] { 1, 3, 2, 6, -1, 4, 1, 8, 2 }, 5); // [2.2,
 																		// 2.8,
@@ -82,9 +82,10 @@ public class P01_SlidingWindow {
 
 	}
 
-	// #1 Max Avg sub array: RT=O(N) space=O(1)
-	// Given nums array, find sub array of size >= k that has max avg val.
+	// #1 Max Avg sub-array: RT=O(N) space=O(1)
+	// Given nums array, find sub-array of size=k that has max avg val.
 	// return the max output value;
+	// https://leetcode.com/problems/maximum-average-subarray-i/
 	public static double maxAvgSubArray(int[] nums, int k) {
 		int max = Integer.MIN_VALUE;
 		int sum = 0;
@@ -98,8 +99,8 @@ public class P01_SlidingWindow {
 		return (double) max / (double) k;
 	}
 
-	// #1.2 Max Avg sub array: RT=O(N) space=O(1)
-	// Given nums, find the avg of all contiguous sub array of size ‘K’ in it
+	// #1.2 Max Avg sub-array: RT=O(N) space=O(1) [same as above]
+	// Given nums, find the avg of all contiguous sub-array of size ‘K’ in it
 	public static void maxAvgSubArray2(int[] nums, int k) {
 		int max = Integer.MIN_VALUE;
 		int sum = 0;
@@ -117,7 +118,8 @@ public class P01_SlidingWindow {
 		System.out.println("res=" + Arrays.toString(res));
 	}
 
-	// #2 Largest subarray length k: RT=O(N) space=O(1)
+	// #2 Largest sub-array length k: RT=O(N) space=O(1)
+	// https://leetcode.com/problems/largest-subarray-length-k/
 	public static int largestSubarrLenK(int[] nums, int k) {
 		int max = Integer.MIN_VALUE;
 		int sum = 0, start = 0;
@@ -133,8 +135,9 @@ public class P01_SlidingWindow {
 		return max;
 	}
 
-	// #3 Minimum size subarray sum: RT=O(N) space=O(1)
-	// Find the len of smallest continious subarray whose sum >= target
+	// #3 Minimum size sub-array sum: RT=O(N) space=O(1)
+	// Find the len of smallest continious sub-array whose sum >= target
+	// https://leetcode.com/problems/minimum-size-subarray-sum/
 	public static int minSizeSubarraySum(int[] arr, int target) {
 		int start = 0, sum = 0;
 		int minLen = Integer.MAX_VALUE;
@@ -146,7 +149,7 @@ public class P01_SlidingWindow {
 				start++;
 			}
 		}
-		return minLen;
+		return minLen; // return minLen==Integer.MAX_VALUE ? 0 : minLen;
 	}
 
 	// #4 Longest Substr with K distinct characters: RT=O(N); space=O(K)-HashMap
