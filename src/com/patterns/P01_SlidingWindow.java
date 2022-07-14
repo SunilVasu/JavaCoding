@@ -136,7 +136,7 @@ public class P01_SlidingWindow {
 	}
 
 	// #3 Minimum size sub-array sum: RT=O(N) space=O(1)
-	// Find the len of smallest continious sub-array whose sum >= target
+	// Find the len of smallest continuous sub-array whose sum >= target
 	// https://leetcode.com/problems/minimum-size-subarray-sum/
 	public static int minSizeSubarraySum(int[] arr, int target) {
 		int start = 0, sum = 0;
@@ -152,9 +152,9 @@ public class P01_SlidingWindow {
 		return minLen; // return minLen==Integer.MAX_VALUE ? 0 : minLen;
 	}
 
-	// #4 Longest Substr with K distinct characters: RT=O(N); space=O(K)-HashMap
-	// Given a str, find the len of the longest substring in it with no more
-	// than k distinct char
+	// #4 Longest substr with ATMOST 'K' dist char: RT=O(N); space=O(K)-HashMap
+	// Given str, find the len of longest substring with AT-MOST k distinct char
+	// https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/
 	public static int longestSubstr(String s, int k) {
 		int start = 0;
 		int maxLen = Integer.MIN_VALUE;
@@ -180,11 +180,9 @@ public class P01_SlidingWindow {
 	public static int longestSubstrK(String s, int k) {
 		int start = 0;
 		int maxLen = Integer.MIN_VALUE;
-		Map<Character, Integer> map = new HashMap<>();
+		HashMap<Character, Integer> map = new HashMap<>();
 		for (int i = 0; i < s.length(); i++) {
-			if (!map.containsKey(s.charAt(i)))
-				map.put(s.charAt(i), 0);
-			map.put(s.charAt(i), map.get(s.charAt(i)) + 1);
+			map.put(s.charAt(i), map.getOrDefault(s.charAt(i), 0) + 1);
 
 			while (map.size() > k) {
 				map.put(s.charAt(start), map.get(s.charAt(start)) - 1);
@@ -219,11 +217,31 @@ public class P01_SlidingWindow {
 			}
 			maxLen = Math.max(maxLen, i - start + 1);
 		}
+		System.out.println("fruitsInBaskets=" + fruitBasket(fruits));
+		return maxLen;
+	}
+
+	public static int fruitBasket(char[] fruits) {
+		int start = 0;
+		int maxLen = Integer.MIN_VALUE;
+		Map<Character, Integer> map = new HashMap<>();
+		for (int i = 0; i < fruits.length; i++) {
+			map.put(fruits[i], map.getOrDefault(fruits[i], 0) + 1);
+
+			while (map.size() > 2) {
+				map.put(fruits[start], map.get(fruits[start]) - 1);
+				if (map.get(fruits[start]) == 0)
+					map.remove(fruits[start]);
+				start++;
+			}
+			maxLen = Math.max(maxLen, i - start + 1);
+		}
 		return maxLen;
 	}
 
 	// #6 Longest Substr with at most 2 distinct chars: RT=O(N);space=O(26)=O(1)
 	// Given a str, find the len of longest substr with at most 2 distinct chars
+	// https://leetcode.com/problems/longest-substring-with-at-most-two-distinct-characters/X
 	public static int longestSubstrWith2Char(String s) {
 		int start = 0;
 		int maxLen = Integer.MIN_VALUE;
@@ -246,8 +264,9 @@ public class P01_SlidingWindow {
 	}
 
 	// #7 Longest substr without repeating characters: RT=O(N); space=O(26)=O(1)
-	// Given a str, find the len of the longest substr, which has no repeating
-	// chars: Logic: [i,j] --> [i, j', j] => [j'+1, j]
+	// Given str, find the len of the longest substr, with no repeating chars
+	// Logic: [i,j] --> [i, j', j] => [j'+1, j]
+	// https://leetcode.com/problems/longest-substring-without-repeating-characters/
 	public static int nonRepeatSubstr(String s) {
 		int start = 0;
 		int maxLen = Integer.MIN_VALUE;
@@ -265,15 +284,16 @@ public class P01_SlidingWindow {
 	// #8 Longest substr with same letters after replacement:RT=O(N); space=O(1)
 	// replace no more than 'k' letters, find len of longest substr having same
 	// letters after replacement
+	// Same as sliding window, but can replace repeating characters
+	// https://leetcode.com/problems/longest-repeating-character-replacement/
 	public static int longestRepeatingCharReplacement(String s, int k) {
 		int start = 0;
 		int maxLen = Integer.MIN_VALUE;
 		int maxRepeatCount = 0;
 		Map<Character, Integer> map = new HashMap<>();
 		for (int i = 0; i < s.length(); i++) {
-			if (!map.containsKey(s.charAt(i)))
-				map.put(s.charAt(i), 0);
-			map.put(s.charAt(i), map.get(s.charAt(i)) + 1);
+			map.put(s.charAt(i), map.getOrDefault(s.charAt(i), 0) + 1);
+
 			maxRepeatCount = Math.max(maxRepeatCount, map.get(s.charAt(i)));
 
 			if (i - start + 1 - maxRepeatCount > k) {
@@ -305,6 +325,7 @@ public class P01_SlidingWindow {
 
 	// #9 max consecutive 1s:
 	// Longest Subarr with 1s after k replacement
+	// https://leetcode.com/problems/max-consecutive-ones-iii/
 	public static int lenOfLongestSubarr(int[] arr, int k) {
 		int start = 0, maxLen = 0, oneCount = 0;
 		for (int i = 0; i < arr.length; i++) {
@@ -337,10 +358,10 @@ public class P01_SlidingWindow {
 
 	// #10 Permutation in String & String Anagrams
 	// https://leetcode.com/problems/find-all-anagrams-in-a-string/
-	// https://leetcode.com/problems/minimum-window-substring/
 	// return true if s2 contains a permutation of s1
+	// ADD all character & then REMOVE; check s1 in s2 [USING ARRAY]
 	public static void checkInclusion() {
-		String s1 = "abc", s2 = "aaacb"; // CHECK: s1 in s2
+		String s1 = "abc", s2 = "aaacb"; // CHECK: s1 in s2 [USING ARRAY]
 		int[] count = new int[26];
 		int l1 = s1.length(), l2 = s2.length();
 		for (int i = 0; i < l1; i++) {
@@ -361,6 +382,7 @@ public class P01_SlidingWindow {
 	}
 
 	// find if s contains a permutation of pat: RT=O(S+T); Space=O(S+T)
+	// ADD everything into map & then REMOVE; check s1 in s2 [USING MAP]
 	public static boolean stringPermutation(String s, String pat) {
 		HashMap<Character, Integer> map = new HashMap<>();
 		for (Character c : pat.toCharArray()) {
@@ -390,7 +412,7 @@ public class P01_SlidingWindow {
 		return false;
 	}
 
-	// #11 String Anagrams
+	// #11 String Anagrams (same as permutation) [USING ARRAY]
 	// https://leetcode.com/problems/find-all-anagrams-in-a-string/
 	// return an array of all the start indices of s1 anagrams in s2
 	public static void stringAnagrams() {
@@ -423,7 +445,7 @@ public class P01_SlidingWindow {
 		return true;
 	}
 
-	// check if s has anagrams of pat: RT=O(S+T); Space=O(S+T)
+	// check if s has anagrams of pat [USING MAP]: RT=O(S+T); Space=O(S+T)
 	public static List<Integer> stringAnagrams(String s, String pat) {
 		List<Integer> res = new LinkedList<>();
 		HashMap<Character, Integer> map = new HashMap<>();
@@ -456,6 +478,7 @@ public class P01_SlidingWindow {
 
 	// #12: Smallest Window containing Substring: RT=O(S+T); Space=O(S+T)
 	// find the smallest substr, containing all char
+	// https://leetcode.com/problems/minimum-window-substring/
 	public static String minimumWindowSubstr(String s, String pat) {
 		HashMap<Character, Integer> map = new HashMap<>();
 		for (char c : pat.toCharArray()) {

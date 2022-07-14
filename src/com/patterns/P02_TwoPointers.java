@@ -114,6 +114,7 @@ public class P02_TwoPointers {
 	}
 
 	// #1 Two Sum: RT=O(N) & space=O(1)
+	// https://leetcode.com/problems/two-sum/
 	public static void twoSum(int[] arr, int target) {
 		int p = 0, q = arr.length - 1;
 		Arrays.sort(arr);
@@ -141,17 +142,17 @@ public class P02_TwoPointers {
 		}
 	}
 
-	// #2 Remove Duplicates: RT=O(N) & space=O(1)
+	// #2 Remove Duplicates: RT=O(N) & space=O(1): Input = 1, 2, 2, 3
+	// https://leetcode.com/problems/remove-duplicates-from-sorted-array/
 	public static void dedupe(int[] arr) {
 		Arrays.sort(arr);
-		int i = 1;// Dedupe index
-		int dedupeIndx = 1;// pointer for iterating
-		while (i < arr.length) {
+		// int i = 1; // pointer for iterating
+		int dedupeIndx = 1; // Dedupe index
+		for (int i = 1; i < arr.length; i++) {
 			if (arr[dedupeIndx - 1] != arr[i]) {
 				arr[dedupeIndx] = arr[i];
 				dedupeIndx++;
 			}
-			i++;
 		}
 		for (int j = 0; j < dedupeIndx; j++) {
 			System.out.print(arr[j] + " ");
@@ -159,27 +160,29 @@ public class P02_TwoPointers {
 		System.out.println("\ndedupeIndx length=" + dedupeIndx);
 	}
 
+	// #2.2 Remove given 'key' from array
+	// https://leetcode.com/problems/remove-element/
 	public static void removeElem_inplace(int[] arr, int key) {
 		Arrays.sort(arr);
 		int nextElem = 0;
 		for (int i = 0; i < arr.length; i++) {
 			if (arr[i] != key) {
-				arr[nextElem] = arr[i];
-				nextElem++;
+				arr[nextElem++] = arr[i];
 			}
 		}
-		for (int j = 0; j < arr.length; j++) {
+		for (int j = 0; j < nextElem; j++) {
 			System.out.print(arr[j] + " ");
 		}
-		System.out.println("End pointer=" + nextElem);
+		System.out.println("\nEnd pointer=" + (nextElem - 1));
 	}
 
 	// #3 Square a sorted array: RT=O(N) & space=O(N)
+	// https://leetcode.com/problems/squares-of-a-sorted-array/
 	public static void squareSortedArr(int[] arr) {
 		int p = 0, q = arr.length - 1;
 		int[] sq = new int[arr.length];
 		int high = arr.length - 1;
-		while (p < q) {
+		while (p <= q) {
 			int p_sq = arr[p] * arr[p];
 			int q_sq = arr[q] * arr[q];
 
@@ -199,6 +202,7 @@ public class P02_TwoPointers {
 
 	// #4 Three Sum: RT=O(NLogN + N^2) = O(N^2) & space=O(N)
 	// checks added to avoid duplicate triplet
+	// https://leetcode.com/problems/3sum/
 	public static void threeSum(int[] nums) {
 		List<List<Integer>> res = new LinkedList<>();
 		Arrays.sort(nums);
@@ -210,12 +214,12 @@ public class P02_TwoPointers {
 				int sum = nums[i] + nums[p1] + nums[p2];
 				if (sum == 0) {
 					res.add(Arrays.asList(nums[i], nums[p1], nums[p2]));
-					p1++;
-					p2--;
 					while (p1 < p2 && nums[p1] == nums[p1 + 1])
 						p1++;
 					while (p1 < p2 && nums[p2] == nums[p2 - 1])
 						p2--;
+					p1++;
+					p2--;
 				} else if (sum < 0) {
 					p1++;
 				} else {
@@ -227,6 +231,7 @@ public class P02_TwoPointers {
 	}
 
 	// #5 find ThreeSum close to target: RT=O(NLogN + N^2)=O(N^2) & space=O(N)
+	// https://leetcode.com/problems/3sum-closest/
 	public static void threeSumClosestTarget(int[] nums, int target) {
 		List<Integer> res = new LinkedList();
 		Arrays.sort(nums);
@@ -247,30 +252,67 @@ public class P02_TwoPointers {
 		System.out.println("result = " + result);
 	}
 
-	// #6 Subarray with product less than target: RT=O(N^3) & space=O(N)
+	// #6 Subarray with cont. product less than target: RT=O(N^3) & space=O(N)
+	// https://leetcode.com/problems/subarray-product-less-than-k/
+	// { 2, 5, 3, 10 }, 30 -> {2}, {5}, {3}, {10}, {2, 5}, {5, 3}
 	public static void findProductSubarr(int[] nums, int target) {
 		List<List<Integer>> res = new LinkedList<>();
-		int start = 0;
+		int start = 0, count = 0;
 		int prod = 1;
 		for (int end = 0; end < nums.length; end++) {
 			prod *= nums[end];
 			// shrink window
-			while (prod >= target && start < nums.length - 1) {
+			while (prod >= target && start <= end) {
 				prod /= nums[start];
 				start++;
 			}
 			List<Integer> temp = new LinkedList<>();
 			for (int i = start; i <= end; i++) {
 				temp.add(nums[i]);
+				res.add(temp);
 			}
-			res.add(temp);
+
+			// Say now we have {1,2,3} and add {4} into it. Apparently, the new
+			// subarray introduced here are: {1,2,3,4}, {2,3,4}, {3,4}, {4}
+			// which is the number of elements in the new list.
+			count += end - start + 1; // correct
 		}
-		System.out.println("res=" + res);
+		System.out.println("res=" + res); // this is incomplete
+		System.out.println("count=" + count); // correct
+
+		twoSumSmaller(new int[] { 2, 4, 5, 6 }, 15); // 3
+		twoSumSmaller(new int[] { -2, 0, 1, 3 }, 2); // 2
+	}
+
+	// #6.2 3sum smaller than target
+	// call 2SumSmaller inside for(i=0..)
+	// https://leetcode.com/problems/3sum-smaller/
+	public static void twoSumSmaller(int[] nums, int k) {
+		System.out.print("=> 2SumSmaller :: ");
+		int low = 0, high = nums.length - 1;
+		Arrays.sort(nums);
+		int count = 0;
+		for (int i = 0; i < nums.length; i++) {
+			int p1 = i + 1, p2 = nums.length - 1;
+			while (p1 <= p2) {
+				int sum = nums[i] + nums[p1] + nums[p2];
+				System.out.print(sum + "-");
+				if (sum < k) {
+					count += p2 - p1;
+					p1++;
+				} else {
+					p2--;
+				}
+			}
+		}
+		System.out.println("\n2SumSmaller = " + count);
 	}
 
 	// #7 Sort Colors(Dutch National Flag): RT=O(N) space=O(1)
 	// Given arr with 0s, 1s, 2s(sort in-place)
-	// Solution: move 0s before low, 2s before high, 1s do nothing
+	// Solution: move 0s before low, 2s after high, 1s do nothing
+	// hence in the end, all 1s will be b/w [0s, 2s]
+	// https://leetcode.com/problems/sort-colors/
 	public static void sortColors(int[] nums) {
 		int low = 0, high = nums.length - 1;
 		int start = 0;
@@ -297,6 +339,7 @@ public class P02_TwoPointers {
 	}
 
 	// #8 Four Sum: RT=O(N^3) space=O(N)
+	// https://leetcode.com/problems/4sum/
 	public static void fourSum(int[] nums) {
 		List<List<Integer>> res = new LinkedList<>();
 		Arrays.sort(nums);
@@ -330,6 +373,7 @@ public class P02_TwoPointers {
 	}
 
 	// #9 Compare String contains backspaces:RT=O(N) space=O(1)
+	// https://leetcode.com/problems/backspace-string-compare/
 	public static void compareString(String s1, String s2) {
 		System.out.println("compare String, strs matches : " + getString(s1).equals(getString(s2)));
 	}
@@ -354,6 +398,7 @@ public class P02_TwoPointers {
 
 	// #10 Mininum Window Sort
 	// Shortest Subarray to be Removed to Make Array Sorted
+	// https://leetcode.com/problems/shortest-subarray-to-be-removed-to-make-array-sorted/
 	public static void findLengthOfShortestSubarray(int[] nums) {
 		int p1 = 0;
 		while (p1 < nums.length - 1 && nums[p1] <= nums[p1 + 1])
