@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 public class P02_TwoPointers {
 
@@ -376,6 +377,7 @@ public class P02_TwoPointers {
 	// https://leetcode.com/problems/backspace-string-compare/
 	public static void compareString(String s1, String s2) {
 		System.out.println("compare String, strs matches : " + getString(s1).equals(getString(s2)));
+		System.out.println("compare String[BruteForce - stack], strs matches : " + compareStr(s1, s2));
 	}
 
 	public static String getString(String str) {
@@ -394,6 +396,38 @@ public class P02_TwoPointers {
 			}
 		}
 		return res;
+	}
+
+	public static boolean compareStr(String s1, String s2) {
+		Stack<Character> stack1 = new Stack<>();
+		Stack<Character> stack2 = new Stack<>();
+
+		for (char c : s1.toCharArray()) {
+			if (c == '#' && !stack1.isEmpty()) {
+				stack1.pop();
+			} else {
+				stack1.push(c);
+			}
+		}
+
+		for (char c : s2.toCharArray()) {
+			if (c == '#' && !stack2.isEmpty()) {
+				stack2.pop();
+			} else {
+				stack2.push(c);
+			}
+		}
+
+		if (stack1.size() != stack2.size())
+			return false;
+
+		while (!stack1.isEmpty() && !stack2.isEmpty()) {
+			if (stack1.pop() != stack2.pop())
+				return false;
+		}
+		if (stack1.size() == stack2.size())
+			return true;
+		return false;
 	}
 
 	// #10 Mininum Window Sort
@@ -460,7 +494,7 @@ public class P02_TwoPointers {
 		}
 	}
 
-	// #2 Remove Duplicates From an Unsorted Linked List
+	// #2 Remove Duplicates[inclusive] From an Unsorted Linked List
 	public static ListNode removeDuplicates(ListNode head) {
 
 		Map<Integer, Integer> map = new HashMap<>();
@@ -491,6 +525,7 @@ public class P02_TwoPointers {
 	// https://leetcode.com/problems/reverse-nodes-in-k-group/
 	// https://leetcode.com/problems/reverse-nodes-in-k-group/discuss/11440/Non-recursive-Java-solution-and-idea
 	public static ListNode reverseKGroup(ListNode head, int k) {
+		// print(reverseKGroup_(head, k), "reverse::");
 		ListNode dummy = new ListNode();
 		dummy.next = head;
 		ListNode start = dummy;
@@ -507,11 +542,11 @@ public class P02_TwoPointers {
 		return dummy.next;
 	}
 
-	// input
-	// 0->1->2->3->4->5->6
+	// input with k=2
+	// O->1->2->3->4->5->6
 	// s........e
 	// After:: start = reverse(start, head.next)
-	// 0->2->1->3->4->5->6
+	// O->2->1->3->4->5->6
 	// ......s..e
 	public static ListNode reverse(ListNode start, ListNode end) {
 		ListNode head = start.next;
