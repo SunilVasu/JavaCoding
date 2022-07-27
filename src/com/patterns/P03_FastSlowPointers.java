@@ -27,6 +27,8 @@ public class P03_FastSlowPointers {
 		System.out.println("\n#4: Middle of List");
 		listNode = initList_Odd();
 		System.out.println("middleOfList=" + middleOfList(listNode));
+		listNode = initList_Odd();
+		deleteMid(listNode);
 
 		// #5: Palindrome LinkedList
 		System.out.println("\n#5: Palindrome LinkedList");
@@ -81,6 +83,7 @@ public class P03_FastSlowPointers {
 	}
 
 	// #1 Check if cycle exist in LinkedList: RT=O(N) n-nodes; space=O(1)
+	// https://leetcode.com/problems/linked-list-cycle/
 	public static boolean hasCycle(ListNode head) {
 		ListNode slow = head, fast = head;
 		while (fast != null && fast.next != null) {
@@ -92,7 +95,7 @@ public class P03_FastSlowPointers {
 		if (fast == null || fast.next == null)
 			return false;
 
-		// to get len, start and count till you reach slow
+		// to get len, start & count till you reach slow
 		ListNode n = head;
 		int len = 0;
 		while (n != null) {
@@ -107,6 +110,9 @@ public class P03_FastSlowPointers {
 	}
 
 	// #2 Start of LinkedList Cycle: RT=O(N) space=O(1)
+	// LOGIC:: There is a cycle in linked list if there is some node in the list
+	// that can be reached again by continuously following the 'next' pointer
+	// https://leetcode.com/problems/linked-list-cycle-ii/
 	public static int startOfListCycle(ListNode head) {
 		ListNode slow = head, fast = head;
 		while (fast != null && fast.next != null) {
@@ -119,6 +125,7 @@ public class P03_FastSlowPointers {
 		if (fast == null || fast.next == null)
 			return -1;
 
+		// iterate till some node is reached again
 		fast = head;
 		while (fast != slow) {
 			slow = slow.next;
@@ -128,6 +135,7 @@ public class P03_FastSlowPointers {
 	}
 
 	// #3: Happy Number: RT=O(logN); space=O(1)
+	// https://leetcode.com/problems/happy-number/
 	public static boolean happyNumber(int n) {
 		int slow = n, fast = n;
 		while (true) {
@@ -153,6 +161,7 @@ public class P03_FastSlowPointers {
 	}
 
 	// #4: Middle of List: RT=O(N); space=O(1)
+	// https://leetcode.com/problems/middle-of-the-linked-list/
 	public static int middleOfList(ListNode head) {
 		ListNode dummy = new ListNode(0);
 		dummy.next = head;
@@ -167,7 +176,24 @@ public class P03_FastSlowPointers {
 		return slow.val;
 	}
 
+	// #4.2: Delete mid elem and return head
+	// https://leetcode.com/problems/delete-the-middle-node-of-a-linked-list/
+	public static void deleteMid(ListNode head) {
+		if (head.next == null)
+			return;
+		ListNode temp = null;
+		ListNode slow = head, fast = head;
+		while (fast != null && fast.next != null) {
+			temp = slow;
+			slow = slow.next;
+			fast = fast.next.next;
+		}
+		temp.next = temp.next.next;
+		printList(head, "delete mid elem");
+	}
+
 	// #5: Palindrome LinkedList
+	// https://leetcode.com/problems/palindrome-linked-list/
 	public static boolean palindromeList(ListNode head) {
 		ListNode slow = head, fast = head;
 		while (fast != null && fast.next != null) {
@@ -199,6 +225,8 @@ public class P03_FastSlowPointers {
 
 	// #6: Rearrange a LinkedList: RT=O(N); space=O(1)
 	// L1 -> L2 -> L3......Ln-2 -> Ln-1 -> Ln
+	// 1) split at mid 2) reverse 2nd half 3) merge 2 list
+	// https://leetcode.com/problems/reorder-list/
 	public static ListNode reorderList(ListNode head) {
 		ListNode head2 = split(head);
 		head2 = reverse(head2);
@@ -276,6 +304,8 @@ public class P03_FastSlowPointers {
 	// #1 Rotate List
 	// https://leetcode.com/problems/rotate-list/
 	public static ListNode rotateRight(ListNode head, int k) {
+		if (head == null || head.next == null)
+			return head;
 		ListNode dummy = new ListNode();
 		dummy.next = head;
 		ListNode fast = dummy, slow = dummy;
@@ -285,7 +315,7 @@ public class P03_FastSlowPointers {
 			size++;
 		}
 		for (int i = size - (k % size); i > 0; i--) {
-			slow = slow.next;
+			slow = slow.next; // before rotate
 		}
 
 		fast.next = dummy.next;
@@ -295,8 +325,8 @@ public class P03_FastSlowPointers {
 	}
 
 	// #2 Sort List
+	// 1) Split @ prev of mid 2) sort 2-list 3) merge then together
 	// https://leetcode.com/problems/sort-list/
-
 	public static ListNode sortList(ListNode head) {
 		if (head == null || head.next == null)
 			return head;

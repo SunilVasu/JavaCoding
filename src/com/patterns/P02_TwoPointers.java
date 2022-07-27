@@ -112,6 +112,15 @@ public class P02_TwoPointers {
 		print(l2, "swap  i/p ");
 		head = swapPair(l2);
 		print(head, "reverseKGroup");
+
+		System.out.println("\n#5 Odd Even grouping");
+		l2 = new ListNode(1);
+		l2.next = new ListNode(2);
+		l2.next.next = new ListNode(3);
+		l2.next.next.next = new ListNode(4);
+		l2.next.next.next.next = new ListNode(5);
+		print(l2, "i/p ");
+		oddEvenList(l2);
 	}
 
 	// #1 Two Sum: RT=O(N) & space=O(1)
@@ -567,6 +576,7 @@ public class P02_TwoPointers {
 	}
 
 	// #4 Swap Nodes in Pairs
+	// https://leetcode.com/problems/swap-nodes-in-pairs/
 	public static ListNode swapPair(ListNode head) {
 		ListNode dummy = new ListNode();
 		dummy.next = head;
@@ -584,8 +594,18 @@ public class P02_TwoPointers {
 	}
 
 	// #5: 2 pointer pair swap
-	// https://leetcode.com/problems/swap-nodes-in-pairs/
 	// https://leetcode.com/problems/odd-even-linked-list/
+	public static void oddEvenList(ListNode head) {
+		ListNode odd = head, even = head.next, evenHead = even;
+		while (even != null && even.next != null) {
+			odd.next = odd.next.next;
+			even.next = even.next.next;
+			odd = odd.next;
+			even = even.next;
+		}
+		odd.next = evenHead;
+		print(head, "OddEvenList grouping");
+	}
 
 	// #META
 	public static void print(ListNode h, String msg) {
